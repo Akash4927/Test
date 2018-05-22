@@ -1,0 +1,601 @@
+{
+  "consumes": [
+    "application/json",
+    "application/xml"
+  ],
+  "produces": [
+    "application/json",
+    "application/xml"
+  ],
+  "schemes": [
+    "http"
+  ],
+  "swagger": "2.0",
+  "info": {
+    "description": "Openebs Provisioner communicates with Maya API server for volume creation and much more.",
+    "title": "Maya API Server.",
+    "termsOfService": "By using our services, you abide by our terms and conditions.",
+    "license": {
+      "name": "Apache License",
+      "url": "http://www.apache.org/licenses/"
+    },
+    "version": "0.5.3"
+  },
+  "host": "m-apiserverUrl",
+  "basePath": "/latest",
+  "paths": {
+    "/volume/": {
+      "get": {
+        "security": [
+          {
+            "api_key": []
+          },
+          {
+            "oauth": [
+              "read",
+              "write"
+            ]
+          }
+        ],
+        "description": "List all the volumes.",
+        "consumes": [
+          "application/json",
+          "application/x-protobuf"
+        ],
+        "produces": [
+          "application/json",
+          "application/x-protobuf"
+        ],
+        "schemes": [
+          "http"
+        ],
+        "tags": [
+          "Volumes"
+        ],
+        "summary": "List volumes",
+        "operationId": "GetVolume",
+        "responses": {
+          "200": {
+            "$ref": "#/responses/volumeSummary"
+          },
+          "500": {
+            "$ref": "#/responses/serverError"
+          }
+        }
+      },
+      "post": {
+        "security": [
+          {
+            "api_key": []
+          },
+          {
+            "oauth": [
+              "read",
+              "write"
+            ]
+          },
+          {
+            "schema": []
+          },
+          {
+            "\"$ref\"": [
+              "\"#/definitions/errorModel\""
+            ]
+          }
+        ],
+        "description": "Create a volume.",
+        "consumes": [
+          "application/json",
+          "application/x-protobuf"
+        ],
+        "produces": [
+          "application/json",
+          "application/x-protobuf"
+        ],
+        "schemes": [
+          "http"
+        ],
+        "tags": [
+          "Volumes"
+        ],
+        "summary": "Create Volume.",
+        "operationId": "CreateVolume",
+        "parameters": [
+          {
+            "name": "Body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "required": [
+                "metadata"
+              ],
+              "properties": {
+                "metadata": {
+                  "$ref": "#/definitions/Metadata"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/VolumeCreated"
+          },
+          "500": {
+            "$ref": "#/responses/serverError"
+          }
+        }
+      }
+    },
+    "/volume/delete/{name}": {
+      "get": {
+        "security": [
+          {
+            "api_key": []
+          },
+          {
+            "oauth": [
+              "read",
+              "write"
+            ]
+          }
+        ],
+        "description": "This will delete available volumes.",
+        "consumes": [
+          "application/json",
+          "application/x-protobuf"
+        ],
+        "produces": [
+          "application/json",
+          "application/x-protobuf"
+        ],
+        "schemes": [
+          "http"
+        ],
+        "tags": [
+          "Volumes"
+        ],
+        "summary": "Deletes volumes.",
+        "operationId": "DeleteVolume",
+        "parameters": [
+          {
+            "uniqueItems": true,
+            "type": "string",
+            "x-go-name": "VolumeName",
+            "description": "Name of volume.",
+            "name": "name",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "500": {
+            "$ref": "#/responses/serverError"
+          }
+        }
+      }
+    },
+    "/volume/info/{name}": {
+      "get": {
+        "security": [
+          {
+            "api_key": []
+          },
+          {
+            "oauth": [
+              "read",
+              "write"
+            ]
+          }
+        ],
+        "description": "Get a specific volume.",
+        "consumes": [
+          "application/json",
+          "application/x-protobuf"
+        ],
+        "produces": [
+          "application/json",
+          "application/x-protobuf"
+        ],
+        "schemes": [
+          "http"
+        ],
+        "tags": [
+          "Volumes"
+        ],
+        "summary": "List a specific volume.",
+        "operationId": "GetSpecificVolume",
+        "parameters": [
+          {
+            "uniqueItems": true,
+            "type": "string",
+            "x-go-name": "VolumeName",
+            "description": "Name of volume.",
+            "name": "name",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/responses/SpecificVolumeSummary"
+          },
+          "500": {
+            "$ref": "#/responses/serverError"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Annotations": {
+      "type": "object",
+      "required": [
+        "vsm.openebs.io/replica-status",
+        "openebs.io/replica-container-status",
+        "vsm.openebs.io/cluster-ips",
+        "openebs.io/storage-pool",
+        "vsm.openebs.io/replica-count",
+        "vsm.openebs.io/volume-size",
+        "openebs.io/capacity",
+        "openebs.io/controller-container-status",
+        "openebs.io/jiva-iqn",
+        "openebs.io/volume-type",
+        "deployment.kubernetes.io/revision",
+        "vsm.openebs.io/controller-status",
+        "openebs.io/jiva-replica-ips",
+        "openebs.io/jiva-controller-cluster-ip",
+        "vsm.openebs.io/targetportals",
+        "openebs.io/jiva-target-portal",
+        "vsm.openebs.io/iqn",
+        "openebs.io/volume-monitor",
+        "vsm.openebs.io/controller-ips",
+        "openebs.io/jiva-controller-ips",
+        "vsm.openebs.io/replica-ips",
+        "openebs.io/jiva-replica-status",
+        "openebs.io/jiva-replica-count",
+        "openebs.io/jiva-controller-status"
+      ],
+      "properties": {
+        "deployment.kubernetes.io/revision": {
+          "type": "string",
+          "x-go-name": "Property11",
+          "example": "1"
+        },
+        "openebs.io/capacity": {
+          "description": "Volume capacity.",
+          "type": "string",
+          "x-go-name": "Property7",
+          "example": "5G"
+        },
+        "openebs.io/controller-container-status": {
+          "description": "Status of controller containers in a pod.",
+          "type": "string",
+          "x-go-name": "Property8",
+          "example": "Running"
+        },
+        "openebs.io/jiva-controller-cluster-ip": {
+          "description": "Jiva controller cluster IP.",
+          "type": "string",
+          "x-go-name": "Property14",
+          "example": "10.0.0.205"
+        },
+        "openebs.io/jiva-controller-ips": {
+          "description": "Jiva controller IP addresses.",
+          "type": "string",
+          "x-go-name": "Property20",
+          "example": "172.17.0.8"
+        },
+        "openebs.io/jiva-controller-status": {
+          "description": "Jiva controller status.",
+          "type": "string",
+          "x-go-name": "Property24",
+          "example": "Running"
+        },
+        "openebs.io/jiva-iqn": {
+          "description": "Volume iqn.",
+          "type": "string",
+          "x-go-name": "Property9",
+          "example": "iqn.2016-09.com.openebs.jiva:test"
+        },
+        "openebs.io/jiva-replica-count": {
+          "description": "Jiva replica count.",
+          "type": "string",
+          "x-go-name": "Property23",
+          "example": "3"
+        },
+        "openebs.io/jiva-replica-ips": {
+          "description": "Jiva replica IP addresses.",
+          "type": "string",
+          "x-go-name": "Property13",
+          "example": "172.17.0.9,nil,nil"
+        },
+        "openebs.io/jiva-replica-status": {
+          "description": "Jiva replica status.",
+          "type": "string",
+          "x-go-name": "Property22",
+          "example": "Running,Pending,Pending"
+        },
+        "openebs.io/jiva-target-portal": {
+          "description": "Jiva target portal address.",
+          "type": "string",
+          "x-go-name": "Property16",
+          "example": "10.0.0.205:3260"
+        },
+        "openebs.io/replica-container-status": {
+          "description": "Status of replica containers in a pod.",
+          "type": "string",
+          "x-go-name": "Property2",
+          "example": "Waiting"
+        },
+        "openebs.io/storage-pool": {
+          "description": "Name of storage pool.",
+          "type": "string",
+          "x-go-name": "Property4",
+          "example": "default"
+        },
+        "openebs.io/volume-monitor": {
+          "description": "Monitoring details.",
+          "type": "string",
+          "x-go-name": "Property18",
+          "example": "false"
+        },
+        "openebs.io/volume-type": {
+          "description": "Volume type.",
+          "type": "string",
+          "x-go-name": "Property10",
+          "example": "jiva"
+        },
+        "vsm.openebs.io/cluster-ips": {
+          "type": "string",
+          "x-go-name": "Property3",
+          "example": "10.0.0.205"
+        },
+        "vsm.openebs.io/controller-ips": {
+          "type": "string",
+          "x-go-name": "Property19",
+          "example": "172.17.0.8"
+        },
+        "vsm.openebs.io/controller-status": {
+          "type": "string",
+          "x-go-name": "Property12",
+          "example": "Running"
+        },
+        "vsm.openebs.io/iqn": {
+          "type": "string",
+          "x-go-name": "Property17",
+          "example": "iqn.2016-09.com.openebs.jiva:test"
+        },
+        "vsm.openebs.io/replica-count": {
+          "type": "string",
+          "x-go-name": "Property5",
+          "example": "3"
+        },
+        "vsm.openebs.io/replica-ips": {
+          "type": "string",
+          "x-go-name": "Property21",
+          "example": "172.17.0.9,nil,nil"
+        },
+        "vsm.openebs.io/replica-status": {
+          "type": "string",
+          "x-go-name": "Property1",
+          "example": "Running,Pending,Pending"
+        },
+        "vsm.openebs.io/targetportals": {
+          "type": "string",
+          "x-go-name": "Property15",
+          "example": "10.0.0.205:3260"
+        },
+        "vsm.openebs.io/volume-size": {
+          "type": "string",
+          "x-go-name": "Property6",
+          "example": "5G"
+        }
+      },
+      "x-go-package": "github.com/openebs/maya/cmd/maya-apiserver"
+    },
+    "Item": {
+      "type": "object",
+      "properties": {
+        "metadata": {
+          "$ref": "#/definitions/Metadata"
+        },
+        "status": {
+          "$ref": "#/definitions/Status"
+        }
+      },
+      "x-go-package": "github.com/openebs/maya/cmd/maya-apiserver"
+    },
+    "Labels": {
+      "type": "object",
+      "properties": {
+        "Property1": {
+          "description": "Contains the volume capacity value",
+          "type": "string",
+          "example": "1G"
+        },
+        "Property2": {
+          "description": "The name of the Kubernetes storage class which will be used during volume operations.",
+          "type": "string",
+          "example": "1G"
+        },
+        "Property3": {
+          "description": "The Kubernetes namespace where volume operations will be executed.",
+          "type": "string",
+          "example": "default"
+        },
+        "annotation.namespace.path.image.provider.Property4": {
+          "description": "The jiva controller image.",
+          "type": "string",
+          "x-go-name": "Property5"
+        }
+      },
+      "x-go-package": "github.com/openebs/maya/cmd/maya-apiserver"
+    },
+    "Meta": {
+      "type": "object",
+      "title": "Standard list metadata.",
+      "x-go-package": "github.com/openebs/maya/cmd/maya-apiserver"
+    },
+    "Metadata": {
+      "type": "object",
+      "required": [
+        "name",
+        "labels",
+        "creationTimestamp",
+        "annotations"
+      ],
+      "properties": {
+        "annotations": {
+          "$ref": "#/definitions/Annotations"
+        },
+        "creationTimestamp": {
+          "description": "The time the snapshot was successfully created.",
+          "type": "string",
+          "x-go-name": "CreationTimestamp",
+          "example": "null"
+        },
+        "labels": {
+          "$ref": "#/definitions/Labels"
+        },
+        "name": {
+          "description": "Volume Name",
+          "type": "string",
+          "x-go-name": "VolumeName",
+          "example": "OpenEBS Volume"
+        }
+      },
+      "x-go-package": "github.com/openebs/maya/cmd/maya-apiserver"
+    },
+    "Metadata1": {
+      "type": "object",
+      "required": [
+        "name"
+      ],
+      "properties": {
+        "creationTimestamp": {
+          "type": "string",
+          "x-go-name": "CreationTimestamp",
+          "example": "null"
+        },
+        "labels": {
+          "$ref": "#/definitions/Labels"
+        },
+        "name": {
+          "type": "string",
+          "x-go-name": "VolumeName",
+          "example": "OpenEBS Volume"
+        }
+      },
+      "x-go-package": "github.com/openebs/maya/cmd/maya-apiserver"
+    },
+    "Status": {
+      "type": "object",
+      "properties": {
+        "Message": {
+          "type": "string",
+          "x-go-name": "StatusProperty1",
+          "example": "null"
+        },
+        "Phase": {
+          "type": "string",
+          "x-go-name": "Property2",
+          "example": "NotRunning"
+        },
+        "Reason": {
+          "type": "string",
+          "x-go-name": "Property3",
+          "example": "null"
+        }
+      },
+      "x-go-package": "github.com/openebs/maya/cmd/maya-apiserver"
+    }
+  },
+  "responses": {
+    "SpecificVolumeSummary": {
+      "description": "Summary volume data that matches the query",
+      "schema": {
+        "type": "object",
+        "required": [
+          "status"
+        ],
+        "properties": {
+          "metadata": {
+            "$ref": "#/definitions/Metadata"
+          },
+          "status": {
+            "$ref": "#/definitions/Status"
+          }
+        }
+      }
+    },
+    "VolumeCreated": {
+      "description": "Volume Created",
+      "schema": {
+        "type": "object",
+        "required": [
+          "metadata"
+        ],
+        "properties": {
+          "metadata": {
+            "$ref": "#/definitions/Metadata1"
+          },
+          "status": {
+            "$ref": "#/definitions/Status"
+          }
+        }
+      }
+    },
+    "serverError": {
+      "description": "Server Error",
+      "schema": {
+        "type": "object",
+        "required": [
+          "message"
+        ],
+        "properties": {
+          "message": {
+            "description": "The Error Message",
+            "type": "string",
+            "x-go-name": "Message",
+            "example": "Something went wrong."
+          }
+        }
+      }
+    },
+    "volumeSummary": {
+      "description": "Summary volume data that matches the query",
+      "schema": {
+        "type": "object",
+        "required": [
+          "items",
+          "metadata"
+        ],
+        "properties": {
+          "items": {
+            "description": "List of openebs volumes.",
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/Item"
+            },
+            "x-go-name": "Items"
+          },
+          "metadata": {
+            "$ref": "#/definitions/Meta"
+          }
+        }
+      }
+    }
+  },
+  "x-meta-array": [
+    "value1",
+    "value2"
+  ],
+  "x-meta-array-obj": [
+    {
+      "name": "obj",
+      "value": "field"
+    }
+  ],
+  "x-meta-value": "value"
+}
